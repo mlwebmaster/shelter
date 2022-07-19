@@ -4662,7 +4662,7 @@
             speed: 800,
             effect: "coverflow",
             coverflowEffect: {
-                rotate: 20,
+                rotate: 30,
                 stretch: 50,
                 slideShadows: true
             },

@@ -736,7 +736,7 @@ h6 {
 
 /* -----------------SERVICES------------------- */
 .services {
-  background: rgba(72, 72, 127, 0.9);
+  background: #48487f;
   position: relative;
 }
 .services__body {
@@ -912,7 +912,6 @@ h6 {
 }
 .inner-service__image img {
   max-width: 100%;
-  opacity: 0.8;
 }
 .inner-service__text {
   -webkit-box-flex: 1;
@@ -1004,7 +1003,7 @@ h6 {
 
 /* -----------------PROGRESS----------------- */
 .progress {
-  background: rgba(72, 72, 127, 0.9);
+  background: #48487f;
 }
 .progress__row {
   display: -webkit-box;
@@ -1461,7 +1460,7 @@ h6 {
 
 /* --------------GALLERY----------------- */
 .gallery {
-  background: rgba(72, 72, 127, 0.9);
+  background: #48487f;
 }
 .gallery__slider {
   position: relative;
@@ -1792,7 +1791,7 @@ h6 {
 
 /* ----------------PERSONAL------------------ */
 .personal {
-  background: rgba(72, 72, 127, 0.9);
+  background: #48487f;
   padding: 50px 0px;
   /* &__image img {
      background-size: cover;
@@ -1830,7 +1829,7 @@ h6 {
 }
 /* ----------------TRUCK------------------ */
 .truck {
-  background: rgba(215, 94, 2, 0.9);
+  background: #d75e02;
   padding: 50px 0px;
   /* &__image img {
      background-size: cover;
@@ -1868,7 +1867,7 @@ h6 {
 }
 /* ----------------OBJECTS------------------ */
 .objects {
-  background: rgba(72, 72, 127, 0.9);
+  background: #48487f;
   padding: 50px 0px;
   /* &__image img {
      background-size: cover;
@@ -1906,7 +1905,7 @@ h6 {
 }
 /* ----------------CONSOLE------------------ */
 .console {
-  background: rgba(215, 94, 2, 0.9);
+  background: #d75e02;
   padding: 50px 0px;
   /* &__image img {
      background-size: cover;
@@ -1944,7 +1943,7 @@ h6 {
 }
 /* ----------------VIDEO------------------ */
 .video {
-  background: rgba(72, 72, 127, 0.9);
+  background: #48487f;
   padding: 50px 0px;
   /* &__image img {
      background-size: cover;
@@ -1982,7 +1981,7 @@ h6 {
 }
 /* ----------------EVENTS------------------ */
 .events {
-  background: rgba(215, 94, 2, 0.9);
+  background: #d75e02;
   padding: 50px 0px;
   /* &__image img {
      background-size: cover;
