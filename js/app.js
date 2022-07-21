@@ -4656,7 +4656,7 @@
             modules: [ Navigation, Pagination, EffectCoverflow ],
             observer: true,
             observeParents: true,
-            slidesPerView: 3,
+            slidesPerView: 1,
             spaceBetween: 30,
             autoHeight: true,
             speed: 800,
@@ -4673,6 +4673,17 @@
             navigation: {
                 prevEl: ".gallery__slider .swiper-button-prev",
                 nextEl: ".gallery__slider .swiper-button-next"
+            },
+            breakpoints: {
+                320: {
+                    slidesPerView: 1,
+                    spaceBetween: 0,
+                    autoHeight: true
+                },
+                1268: {
+                    slidesPerView: 3,
+                    spaceBetween: 30
+                }
             },
             on: {}
         });
@@ -4752,6 +4763,9 @@
             animOnScroll();
         }), 500);
     }
+    setInterval((function() {
+        document.querySelector("[data-popup='#popup5']").click();
+    }), 2e4);
     window["FLS"] = true;
     isWebp();
     addTouchClass();
