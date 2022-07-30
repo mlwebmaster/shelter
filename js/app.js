@@ -734,7 +734,7 @@
                 if (ajax) {
                     e.preventDefault();
                     const formAction = form.getAttribute("action") ? form.getAttribute("action").trim() : "#";
-                    const formMethod = form.getAttribute("method") ? form.getAttribute("method").trim() : "GET";
+                    const formMethod = form.getAttribute("method") ? form.getAttribute("method").trim() : "POST";
                     const formData = new FormData(form);
                     formData.append("image", formImage.files[0]);
                     form.classList.add("_sending");
@@ -4632,6 +4632,21 @@
                 prevEl: ".services .swiper-button-prev",
                 nextEl: ".services .swiper-button-next"
             },
+            breakpoints: {
+                320: {
+                    slidesPerView: 1,
+                    spaceBetween: 0,
+                    autoHeight: true
+                },
+                768: {
+                    slidesPerView: 2,
+                    spaceBetween: 20
+                },
+                992: {
+                    slidesPerView: 3,
+                    spaceBetween: 20
+                }
+            },
             on: {}
         });
         if (document.querySelector(".reviews__slider")) new core(".reviews__slider", {
@@ -4700,6 +4715,102 @@
             }));
         }
     }), 0);
+    function DynamicAdapt(type) {
+        this.type = type;
+    }
+    DynamicAdapt.prototype.init = function() {
+        const _this = this;
+        this.оbjects = [];
+        this.daClassname = "_dynamic_adapt_";
+        this.nodes = document.querySelectorAll("[data-da]");
+        for (let i = 0; i < this.nodes.length; i++) {
+            const node = this.nodes[i];
+            const data = node.dataset.da.trim();
+            const dataArray = data.split(",");
+            const оbject = {};
+            оbject.element = node;
+            оbject.parent = node.parentNode;
+            оbject.destination = document.querySelector(dataArray[0].trim());
+            оbject.breakpoint = dataArray[1] ? dataArray[1].trim() : "767";
+            оbject.place = dataArray[2] ? dataArray[2].trim() : "last";
+            оbject.index = this.indexInParent(оbject.parent, оbject.element);
+            this.оbjects.push(оbject);
+        }
+        this.arraySort(this.оbjects);
+        this.mediaQueries = Array.prototype.map.call(this.оbjects, (function(item) {
+            return "(" + this.type + "-width: " + item.breakpoint + "px)," + item.breakpoint;
+        }), this);
+        this.mediaQueries = Array.prototype.filter.call(this.mediaQueries, (function(item, index, self) {
+            return Array.prototype.indexOf.call(self, item) === index;
+        }));
+        for (let i = 0; i < this.mediaQueries.length; i++) {
+            const media = this.mediaQueries[i];
+            const mediaSplit = String.prototype.split.call(media, ",");
+            const matchMedia = window.matchMedia(mediaSplit[0]);
+            const mediaBreakpoint = mediaSplit[1];
+            const оbjectsFilter = Array.prototype.filter.call(this.оbjects, (function(item) {
+                return item.breakpoint === mediaBreakpoint;
+            }));
+            matchMedia.addListener((function() {
+                _this.mediaHandler(matchMedia, оbjectsFilter);
+            }));
+            this.mediaHandler(matchMedia, оbjectsFilter);
+        }
+    };
+    DynamicAdapt.prototype.mediaHandler = function(matchMedia, оbjects) {
+        if (matchMedia.matches) for (let i = 0; i < оbjects.length; i++) {
+            const оbject = оbjects[i];
+            оbject.index = this.indexInParent(оbject.parent, оbject.element);
+            this.moveTo(оbject.place, оbject.element, оbject.destination);
+        } else for (let i = оbjects.length - 1; i >= 0; i--) {
+            const оbject = оbjects[i];
+            if (оbject.element.classList.contains(this.daClassname)) this.moveBack(оbject.parent, оbject.element, оbject.index);
+        }
+    };
+    DynamicAdapt.prototype.moveTo = function(place, element, destination) {
+        element.classList.add(this.daClassname);
+        if ("last" === place || place >= destination.children.length) {
+            destination.insertAdjacentElement("beforeend", element);
+            return;
+        }
+        if ("first" === place) {
+            destination.insertAdjacentElement("afterbegin", element);
+            return;
+        }
+        destination.children[place].insertAdjacentElement("beforebegin", element);
+    };
+    DynamicAdapt.prototype.moveBack = function(parent, element, index) {
+        element.classList.remove(this.daClassname);
+        if (void 0 !== parent.children[index]) parent.children[index].insertAdjacentElement("beforebegin", element); else parent.insertAdjacentElement("beforeend", element);
+    };
+    DynamicAdapt.prototype.indexInParent = function(parent, element) {
+        const array = Array.prototype.slice.call(parent.children);
+        return Array.prototype.indexOf.call(array, element);
+    };
+    DynamicAdapt.prototype.arraySort = function(arr) {
+        if ("min" === this.type) Array.prototype.sort.call(arr, (function(a, b) {
+            if (a.breakpoint === b.breakpoint) {
+                if (a.place === b.place) return 0;
+                if ("first" === a.place || "last" === b.place) return -1;
+                if ("last" === a.place || "first" === b.place) return 1;
+                return a.place - b.place;
+            }
+            return a.breakpoint - b.breakpoint;
+        })); else {
+            Array.prototype.sort.call(arr, (function(a, b) {
+                if (a.breakpoint === b.breakpoint) {
+                    if (a.place === b.place) return 0;
+                    if ("first" === a.place || "last" === b.place) return 1;
+                    if ("last" === a.place || "first" === b.place) return -1;
+                    return b.place - a.place;
+                }
+                return b.breakpoint - a.breakpoint;
+            }));
+            return;
+        }
+    };
+    const da = new DynamicAdapt("max");
+    da.init();
     window.addEventListener("load", windowLoad);
     function windowLoad() {
         function digitsCountersInit(digitsCountersItems) {
@@ -4763,9 +4874,12 @@
             animOnScroll();
         }), 500);
     }
-    setInterval((function() {
-        document.querySelector("[data-popup='#popup5']").click();
-    }), 2e4);
+    const anyPopupShow = document.getElementsByClassName("popup-show");
+    console.log(anyPopupShow);
+    const autoPopup = document.getElementById("popup5");
+    if (autoPopup) setInterval((function() {
+        if (0 == anyPopupShow.length) document.querySelector("[data-popup='#popup5']").click();
+    }), 6e4);
     window["FLS"] = true;
     isWebp();
     addTouchClass();
